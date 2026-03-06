@@ -1,6 +1,7 @@
 package tests;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
+import models.login.WrongCredentialsLoginResponseModel;
 import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,6 +11,8 @@ public class LoginTests extends TestBase {
 
     String username = "qaguru";
     String password = "qaguru123";
+    String wrongPassword = "qaguru1234";
+    String wrongUsername = "qaguru1234";
 
     @Test
     public void successfulLoginTest(){
@@ -30,5 +33,41 @@ public class LoginTests extends TestBase {
         assertThat(actualAccess).startsWith(expectedTokenPath);
         assertThat(actualRefresh).startsWith(expectedTokenPath);
         assertThat(actualAccess).isNotEqualTo(actualRefresh);
+    }
+
+    @Test
+    public void wrongCredentialsPasswordTest(){
+        LoginBodyModel loginData = new LoginBodyModel(username, wrongPassword);
+
+        WrongCredentialsLoginResponseModel loginResponse = given(loginRequestSpec)
+                .body(loginData)
+                .when()
+                .post("/auth/token/")
+                .then()
+                .spec(wrongCredentialsLoginResponseSpec)
+                .extract().as(WrongCredentialsLoginResponseModel.class);
+
+        String expectedDetailError = "Invalid username or password.";
+        String actualDetailError = loginResponse.detail();
+
+        assertThat(actualDetailError).isEqualTo(expectedDetailError);
+    }
+
+    @Test
+    public void wrongCredentialsLoginTest(){
+        LoginBodyModel loginData = new LoginBodyModel(wrongUsername, password);
+
+        WrongCredentialsLoginResponseModel loginResponse = given(loginRequestSpec)
+                .body(loginData)
+                .when()
+                .post("/auth/token/")
+                .then()
+                .spec(wrongCredentialsLoginResponseSpec)
+                .extract().as(WrongCredentialsLoginResponseModel.class);
+
+        String expectedDetailError = "Invalid username or password.";
+        String actualDetailError = loginResponse.detail();
+
+        assertThat(actualDetailError).isEqualTo(expectedDetailError);
     }
 }

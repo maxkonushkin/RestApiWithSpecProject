@@ -1,4 +1,4 @@
-package specs.login;
+package specs.logout;
 
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.specification.RequestSpecification;
@@ -10,27 +10,22 @@ import static io.restassured.http.ContentType.JSON;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.Matchers.notNullValue;
 
-public class LoginSpec {
-    public static RequestSpecification loginRequestSpec = with()
+public class LogoutSpec {
+    public static RequestSpecification logoutRequestSpec = with()
             .log().all()
             .contentType(JSON)
             .basePath("/api/v1");
 
-    public static ResponseSpecification successfulLoginResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification successfulLogoutResponseSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(200)
+            .build();
+
+    public static ResponseSpecification emptyLogoutResponseSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(400)
             .expectBody(matchesJsonSchemaInClasspath(
-                    "schemas/login/successful_login_response_schema.json"))
-            .expectBody("access", notNullValue())
+                    "schemas/logout/empty_token_logout_response_schema.json"))
             .expectBody("refresh", notNullValue())
             .build();
-
-    public static ResponseSpecification wrongCredentialsLoginResponseSpec = new ResponseSpecBuilder()
-            .log(ALL)
-            .expectStatusCode(401)
-            .expectBody(matchesJsonSchemaInClasspath(
-                    "schemas/login/wrong_credentials_login_response_schema.json"))
-            .expectBody("detail", notNullValue())
-            .build();
-
 }
