@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
 import static specs.registration.RegisterSpec.*;
 
 public class RegistrationTests extends TestBase {
@@ -72,17 +71,17 @@ public class RegistrationTests extends TestBase {
     }
 
     @Test
-    public void noPasswordRegistrationTest(){
+    public void withoutPasswordRegistrationTest(){
 
-        RegistrationNoPasswordBodyModel registrationData = new RegistrationNoPasswordBodyModel(username);
+        RegistrationWithoutPasswordBodyModel registrationData = new RegistrationWithoutPasswordBodyModel(username);
 
-        NoPasswordResponseModel registrationResponse = given(RegisterRequestSpec)
+        WithoutPasswordResponseModel registrationResponse = given(RegisterRequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
                 .then()
-                .spec(noPasswordRegisterRequestSpec)
-                .extract().as(NoPasswordResponseModel.class);
+                .spec(withoutPasswordRegisterRequestSpec)
+                .extract().as(WithoutPasswordResponseModel.class);
 
         String expectedRefresh = "This field is required.";
         String actualRefresh = registrationResponse.password().get(0);

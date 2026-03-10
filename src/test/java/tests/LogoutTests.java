@@ -1,20 +1,12 @@
 package tests;
 
-import io.restassured.RestAssured;
-import io.restassured.response.Response;
 import models.login.LoginBodyModel;
-import models.login.SuccessfulLoginResponseModel;
-import models.login.WrongCredentialsLoginResponseModel;
 import models.logout.EmptyLogoutResponseModel;
 import models.logout.LogoutBodyModel;
 import org.junit.jupiter.api.Test;
-
 import static io.restassured.RestAssured.given;
-import static io.restassured.http.ContentType.JSON;
 import static java.lang.String.format;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
 import static specs.login.LoginSpec.*;
 import static specs.logout.LogoutSpec.*;
 

@@ -34,11 +34,11 @@ public class RegisterSpec {
             .expectBody("username", notNullValue())
             .build();
 
-    public static ResponseSpecification noPasswordRegisterRequestSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification withoutPasswordRegisterRequestSpec = new ResponseSpecBuilder()
             .log(ALL)
             .expectStatusCode(400)
             .expectBody(matchesJsonSchemaInClasspath(
-                    "schemas/registration/nopassword_registration_response_schema.json"))
+                    "schemas/registration/without_password_registration_response_schema.json"))
             .expectBody("password", notNullValue())
             .build();
 }
