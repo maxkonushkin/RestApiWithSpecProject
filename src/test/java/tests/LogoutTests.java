@@ -37,7 +37,6 @@ public class LogoutTests extends TestBase {
                 .spec(successfulLogoutResponseSpec);
         assertThat(loginData.username()).isEqualTo(username);
         assertThat(loginData.password()).isEqualTo(password);
-        // todo check logoutResponse is empty
     }
 
     @Test
@@ -56,6 +55,5 @@ public class LogoutTests extends TestBase {
         String expectedRefresh = "This field may not be blank.";
         String actualRefresh = logoutResponse.refresh().get(0);
         assertThat(actualRefresh).isEqualTo(expectedRefresh);
-
     }
 }
