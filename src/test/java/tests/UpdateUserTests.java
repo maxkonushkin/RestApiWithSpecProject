@@ -72,15 +72,20 @@ public class UpdateUserTests extends TestBase {
         assertThat(actualAccess).isNotEqualTo(actualRefresh);
         String accessToken = "Bearer " + loginResponse.access();
 
-        UpdateBodyModel loginData2 = new UpdateBodyModel(username, firstName, lastName, email);
+        UpdateBodyModel updateData = new UpdateBodyModel(username, firstName, lastName, email);
 
-        SuccessfulUpdateUserModel loginResponse2 = given(updateRequestSpec)
-                .body(loginData2)
+        SuccessfulUpdateUserModel updateResponse = given(updateRequestSpec)
+                .body(updateData)
                 .header("Authorization", accessToken)
                 .when()
                 .patch("/users/me/")
                 .then()
                 .spec(successfulUpdateResponseSpec)
                 .extract().as(SuccessfulUpdateUserModel.class);
+
+        assertThat(updateResponse.username()).isEqualTo(username);
+        assertThat(updateResponse.firstName()).isEqualTo(firstName);
+        assertThat(updateResponse.lastName()).isEqualTo(lastName);
+        assertThat(updateResponse.email()).isEqualTo(email);
     }
 }
