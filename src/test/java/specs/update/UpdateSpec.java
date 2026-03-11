@@ -20,5 +20,6 @@ public class UpdateSpec {
             .expectBody(matchesJsonSchemaInClasspath(
                     "schemas/update/successful_update_response_schema.json"))
             .build();
+
 }
 
