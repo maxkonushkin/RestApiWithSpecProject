@@ -144,5 +144,6 @@ public class UpdateUserTests extends TestBase {
         assertThat(updateResponse.firstName()).isEqualTo(firstName);
         assertThat(updateResponse.lastName()).isEqualTo(lastName);
         assertThat(updateResponse.email()).isEqualTo(email);
+
     }
 }
