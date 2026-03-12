@@ -19,7 +19,7 @@ public class LogoutTests extends TestBase {
     public void successfulLogoutTest(){
         LoginBodyModel loginData = new LoginBodyModel(username, password);
 
-        String refreshToken = given(loginRequestSpec)
+        String refreshToken = given(RequestSpec)
                 .body(loginData)
                 .when()
                 .post("/auth/token/")
@@ -29,7 +29,7 @@ public class LogoutTests extends TestBase {
 
         String logoutData = format("{\"refresh\": \"%s\"}", refreshToken);
 
-        given(logoutRequestSpec)
+        given(RequestSpec)
                 .body(logoutData)
                 .when()
                 .post("/auth/logout/")
@@ -44,7 +44,7 @@ public class LogoutTests extends TestBase {
         String refresh = "";
         LogoutBodyModel logoutData = new LogoutBodyModel(refresh);
 
-        EmptyLogoutResponseModel logoutResponse = given(logoutRequestSpec)
+        EmptyLogoutResponseModel logoutResponse = given(RequestSpec)
                 .body(logoutData)
                 .when()
                 .post("/auth/logout/")

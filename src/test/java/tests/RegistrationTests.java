@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
+import static specs.login.LoginSpec.RequestSpec;
 import static specs.registration.RegisterSpec.*;
 
 public class RegistrationTests extends TestBase {
@@ -24,12 +25,12 @@ public class RegistrationTests extends TestBase {
     public void successfulRegistrationTest(){
         RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
 
-        SuccessfulRegistrationResponseModel registrationResponse = given(RegisterRequestSpec)
+        SuccessfulRegistrationResponseModel registrationResponse = given(RequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
                 .then()
-                .spec(successRegisterRequestSpec)
+                .spec(successRegisterResponseSpec)
                 .extract().as(SuccessfulRegistrationResponseModel.class);
 
         assertThat(registrationResponse.id()).isGreaterThan(0);
@@ -47,22 +48,22 @@ public class RegistrationTests extends TestBase {
     public void existingUserWrongRegistrationTest(){
         RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
 
-        SuccessfulRegistrationResponseModel firstRegistrationResponse = given(RegisterRequestSpec)
+        SuccessfulRegistrationResponseModel firstRegistrationResponse = given(RequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
                 .then()
-                .spec(successRegisterRequestSpec)
+                .spec(successRegisterResponseSpec)
                 .extract().as(SuccessfulRegistrationResponseModel.class);
 
         assertThat(firstRegistrationResponse.username()).isEqualTo(username);
 
-        ExistingUserResponseModel secondRegistrationResponse = given(RegisterRequestSpec)
+        ExistingUserResponseModel secondRegistrationResponse = given(RequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
                 .then()
-                .spec(wrongCredentialsRegisterRequestSpec)
+                .spec(wrongCredentialsRegisterResponseSpec)
                 .extract().as(ExistingUserResponseModel.class);
 
         String expectedError = "A user with that username already exists.";
@@ -75,12 +76,12 @@ public class RegistrationTests extends TestBase {
 
         RegistrationWithoutPasswordBodyModel registrationData = new RegistrationWithoutPasswordBodyModel(username);
 
-        WithoutPasswordResponseModel registrationResponse = given(RegisterRequestSpec)
+        WithoutPasswordResponseModel registrationResponse = given(RequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
                 .then()
-                .spec(withoutPasswordRegisterRequestSpec)
+                .spec(withoutPasswordRegisterResponseSpec)
                 .extract().as(WithoutPasswordResponseModel.class);
 
         String expectedRefresh = "This field is required.";

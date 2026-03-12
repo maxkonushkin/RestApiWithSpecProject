@@ -1,7 +1,7 @@
 package tests;
 
-import models.Update.SuccessfulUpdateUserModel;
-import models.Update.UpdateBodyModel;
+import models.update.SuccessfulUpdateUserModel;
+import models.update.UpdateBodyModel;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import models.registration.RegistrationBodyModel;
@@ -11,10 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static specs.login.LoginSpec.loginRequestSpec;
+import static specs.login.LoginSpec.RequestSpec;
 import static specs.login.LoginSpec.successfulLoginResponseSpec;
-import static specs.registration.RegisterSpec.RegisterRequestSpec;
-import static specs.registration.RegisterSpec.successRegisterRequestSpec;
+import static specs.registration.RegisterSpec.successRegisterResponseSpec;
 import static specs.update.UpdateSpec.*;
 
 public class UpdateUserTests extends TestBase {
@@ -34,12 +33,12 @@ public class UpdateUserTests extends TestBase {
     public void successfulPatchUpdateTest(){
         RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
 
-        SuccessfulRegistrationResponseModel registrationResponse = given(RegisterRequestSpec)
+        SuccessfulRegistrationResponseModel registrationResponse = given(RequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
                 .then()
-                .spec(successRegisterRequestSpec)
+                .spec(successRegisterResponseSpec)
                 .extract().as(SuccessfulRegistrationResponseModel.class);
 
         assertThat(registrationResponse.id()).isGreaterThan(0);
@@ -54,7 +53,7 @@ public class UpdateUserTests extends TestBase {
 
         LoginBodyModel loginData = new LoginBodyModel(username, password);
 
-        SuccessfulLoginResponseModel loginResponse = given(loginRequestSpec)
+        SuccessfulLoginResponseModel loginResponse = given(RequestSpec)
                 .body(loginData)
                 .when()
                 .post("/auth/token/")
@@ -73,7 +72,7 @@ public class UpdateUserTests extends TestBase {
 
         UpdateBodyModel updateData = new UpdateBodyModel(username, firstName, lastName, email);
 
-        SuccessfulUpdateUserModel updateResponse = given(updateRequestSpec)
+        SuccessfulUpdateUserModel updateResponse = given(RequestSpec)
                 .body(updateData)
                 .header("Authorization", accessToken)
                 .when()
@@ -92,12 +91,12 @@ public class UpdateUserTests extends TestBase {
     public void successfulPutUpdateTest(){
         RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
 
-        SuccessfulRegistrationResponseModel registrationResponse = given(RegisterRequestSpec)
+        SuccessfulRegistrationResponseModel registrationResponse = given(RequestSpec)
                 .body(registrationData)
                 .when()
                 .post("/users/register/")
                 .then()
-                .spec(successRegisterRequestSpec)
+                .spec(successRegisterResponseSpec)
                 .extract().as(SuccessfulRegistrationResponseModel.class);
 
         assertThat(registrationResponse.id()).isGreaterThan(0);
@@ -112,7 +111,7 @@ public class UpdateUserTests extends TestBase {
 
         LoginBodyModel loginData = new LoginBodyModel(username, password);
 
-        SuccessfulLoginResponseModel loginResponse = given(loginRequestSpec)
+        SuccessfulLoginResponseModel loginResponse = given(RequestSpec)
                 .body(loginData)
                 .when()
                 .post("/auth/token/")
@@ -131,7 +130,7 @@ public class UpdateUserTests extends TestBase {
 
         UpdateBodyModel updateData = new UpdateBodyModel(username, firstName, lastName, email);
 
-        SuccessfulUpdateUserModel updateResponse = given(updateRequestSpec)
+        SuccessfulUpdateUserModel updateResponse = given(RequestSpec)
                 .body(updateData)
                 .header("Authorization", accessToken)
                 .when()

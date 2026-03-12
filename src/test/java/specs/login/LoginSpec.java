@@ -10,7 +10,7 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 import static org.hamcrest.Matchers.notNullValue;
 
 public class LoginSpec {
-    public static RequestSpecification loginRequestSpec = with()
+    public static RequestSpecification RequestSpec = with()
             .log().all()
             .contentType(JSON);
 
