@@ -12,8 +12,7 @@ import static org.hamcrest.Matchers.notNullValue;
 public class LogoutSpec {
     public static RequestSpecification logoutRequestSpec = with()
             .log().all()
-            .contentType(JSON)
-            .basePath("/api/v1");
+            .contentType(JSON);
 
     public static ResponseSpecification successfulLogoutResponseSpec = new ResponseSpecBuilder()
             .log(ALL)

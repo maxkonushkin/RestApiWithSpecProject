@@ -11,8 +11,7 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 public class UpdateSpec {
     public static RequestSpecification updateRequestSpec = with()
             .log().all()
-            .contentType(JSON)
-            .basePath("/api/v1");
+            .contentType(JSON);
 
     public static ResponseSpecification successfulUpdateResponseSpec = new ResponseSpecBuilder()
             .log(ALL)

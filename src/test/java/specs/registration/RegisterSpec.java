@@ -12,8 +12,7 @@ import static org.hamcrest.Matchers.notNullValue;
 public class RegisterSpec {
     public static RequestSpecification RegisterRequestSpec = with()
             .log().all()
-            .contentType(JSON)
-            .basePath("/api/v1");
+            .contentType(JSON);
 
     public static ResponseSpecification successRegisterRequestSpec = new ResponseSpecBuilder()
             .log(ALL)

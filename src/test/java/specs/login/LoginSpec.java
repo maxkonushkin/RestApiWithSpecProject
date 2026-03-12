@@ -12,8 +12,7 @@ import static org.hamcrest.Matchers.notNullValue;
 public class LoginSpec {
     public static RequestSpecification loginRequestSpec = with()
             .log().all()
-            .contentType(JSON)
-            .basePath("/api/v1");
+            .contentType(JSON);
 
     public static ResponseSpecification successfulLoginResponseSpec = new ResponseSpecBuilder()
             .log(ALL)
