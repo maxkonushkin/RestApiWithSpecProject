@@ -3,12 +3,13 @@ package tests;
 import models.update.SuccessfulUpdateUserModel;
 import models.update.UpdateBodyModel;
 import models.login.LoginBodyModel;
-import models.login.SuccessfulLoginResponseModel;
 import models.registration.RegistrationBodyModel;
 import models.registration.SuccessfulRegistrationResponseModel;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static specs.login.LoginSpec.RequestSpec;
@@ -30,7 +31,9 @@ public class UpdateUserTests extends TestBase {
     }
 
     @Test
+    @DisplayName("Успешное изменение пользователя методом patch")
     public void successfulPatchUpdateTest(){
+        step("Регистрация нового пользователя и проверка ответа (201)", () -> {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
 
         SuccessfulRegistrationResponseModel registrationResponse = given(RequestSpec)
@@ -50,28 +53,22 @@ public class UpdateUserTests extends TestBase {
         String ipAddrRegexp = "^((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.){3}"
                 + "(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)$";
         assertThat(registrationResponse.remoteAddr()).matches(ipAddrRegexp);
+        });
 
         LoginBodyModel loginData = new LoginBodyModel(username, password);
 
-        SuccessfulLoginResponseModel loginResponse = given(RequestSpec)
-                .body(loginData)
-                .when()
-                .post("/auth/token/")
-                .then()
-                .spec(successfulLoginResponseSpec)
-                .extract().as(SuccessfulLoginResponseModel.class);
-
-        String expectedTokenPath = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
-        String actualAccess = loginResponse.access();
-        String actualRefresh = loginResponse.refresh();
-
-        assertThat(actualAccess).startsWith(expectedTokenPath);
-        assertThat(actualRefresh).startsWith(expectedTokenPath);
-        assertThat(actualAccess).isNotEqualTo(actualRefresh);
-        String accessToken = "Bearer " + loginResponse.access();
+        String accessToken = "Bearer " + step("Авторизация и получение токена", () ->
+                given(RequestSpec)
+                        .body(loginData)
+                        .when()
+                        .post("/auth/token/")
+                        .then()
+                        .spec(successfulLoginResponseSpec)
+                        .extract()
+                        .path("access"));
 
         UpdateBodyModel updateData = new UpdateBodyModel(username, firstName, lastName, email);
-
+        step("Отправка токена", () -> {
         SuccessfulUpdateUserModel updateResponse = given(RequestSpec)
                 .body(updateData)
                 .header("Authorization", accessToken)
@@ -85,10 +82,13 @@ public class UpdateUserTests extends TestBase {
         assertThat(updateResponse.firstName()).isEqualTo(firstName);
         assertThat(updateResponse.lastName()).isEqualTo(lastName);
         assertThat(updateResponse.email()).isEqualTo(email);
+        });
     }
 
     @Test
+    @DisplayName("Успешное изменение пользователя методом put")
     public void successfulPutUpdateTest(){
+        step("Регистрация нового пользователя и проверка ответа (201)", () -> {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
 
         SuccessfulRegistrationResponseModel registrationResponse = given(RequestSpec)
@@ -108,28 +108,21 @@ public class UpdateUserTests extends TestBase {
         String ipAddrRegexp = "^((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.){3}"
                 + "(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)$";
         assertThat(registrationResponse.remoteAddr()).matches(ipAddrRegexp);
-
+        });
         LoginBodyModel loginData = new LoginBodyModel(username, password);
 
-        SuccessfulLoginResponseModel loginResponse = given(RequestSpec)
-                .body(loginData)
-                .when()
-                .post("/auth/token/")
-                .then()
-                .spec(successfulLoginResponseSpec)
-                .extract().as(SuccessfulLoginResponseModel.class);
-
-        String expectedTokenPath = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9";
-        String actualAccess = loginResponse.access();
-        String actualRefresh = loginResponse.refresh();
-
-        assertThat(actualAccess).startsWith(expectedTokenPath);
-        assertThat(actualRefresh).startsWith(expectedTokenPath);
-        assertThat(actualAccess).isNotEqualTo(actualRefresh);
-        String accessToken = "Bearer " + loginResponse.access();
+        String accessToken = "Bearer " + step("Авторизация и получение токена", () ->
+                given(RequestSpec)
+                        .body(loginData)
+                        .when()
+                        .post("/auth/token/")
+                        .then()
+                        .spec(successfulLoginResponseSpec)
+                        .extract()
+                        .path("access"));
 
         UpdateBodyModel updateData = new UpdateBodyModel(username, firstName, lastName, email);
-
+        step("Отправка токена", () -> {
         SuccessfulUpdateUserModel updateResponse = given(RequestSpec)
                 .body(updateData)
                 .header("Authorization", accessToken)
@@ -143,6 +136,6 @@ public class UpdateUserTests extends TestBase {
         assertThat(updateResponse.firstName()).isEqualTo(firstName);
         assertThat(updateResponse.lastName()).isEqualTo(lastName);
         assertThat(updateResponse.email()).isEqualTo(email);
-
+        });
     }
 }
