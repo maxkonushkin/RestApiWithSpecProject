@@ -5,10 +5,12 @@ import models.logout.EmptyLogoutResponseModel;
 import models.logout.LogoutBodyModel;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static java.lang.String.format;
 import static org.assertj.core.api.Assertions.assertThat;
+import static specs.RequestSpec.RequestSpec;
 import static specs.login.LoginSpec.*;
 import static specs.logout.LogoutSpec.*;
 
@@ -19,48 +21,54 @@ public class LogoutTests extends TestBase {
 
     @Test
     @DisplayName("Успешная отправка токена и проверка ответа")
-    public void successfulLogoutTest(){
-        LoginBodyModel loginData = new LoginBodyModel(username, password);
-        String refreshToken = step ("Авторизация пользователя" , () ->
-        given(RequestSpec)
-                .body(loginData)
-                .when()
-                .post("/auth/token/")
-                .then()
-                .spec(successfulLoginResponseSpec)
-                .extract().path("refresh"));
+    public void successfulLogoutTest() {
 
-        step ("Отправка токена и проверка ответа" , () -> {
+        LoginBodyModel loginData = new LoginBodyModel(username, password);
+
+        String refreshToken = step("Авторизация пользователя", () -> {
+            return given(RequestSpec)
+                    .body(loginData)
+                    .when()
+                    .post("/auth/token/")
+                    .then()
+                    .spec(successfulLoginResponseSpec)
+                    .extract().path("refresh");
+        });
+        step("Отправка токена и проверка ответа", () -> {
             String logoutData = format("{\"refresh\": \"%s\"}", refreshToken);
-        given(RequestSpec)
-                .body(logoutData)
-                .when()
-                .post("/auth/logout/")
-                .then()
-                .spec(successfulLogoutResponseSpec);
-        assertThat(loginData.username()).isEqualTo(username);
-        assertThat(loginData.password()).isEqualTo(password);
+            given(RequestSpec)
+                    .body(logoutData)
+                    .when()
+                    .post("/auth/logout/")
+                    .then()
+                    .spec(successfulLogoutResponseSpec);
+        });
+        step("Проверка, что данные для логина не изменились", () -> {
+            assertThat(loginData.username()).isEqualTo(username);
+            assertThat(loginData.password()).isEqualTo(password);
         });
     }
 
     @Test
     @DisplayName("Отправка токена под неавторизованным пользователем")
-    public void emptyLogoutResponseTest(){
-        step ("Отправка токена под неавторизованным пользователем" , () -> {
-        String refresh = "";
-        LogoutBodyModel logoutData = new LogoutBodyModel(refresh);
+    public void emptyLogoutResponseTest() {
 
-        EmptyLogoutResponseModel logoutResponse = given(RequestSpec)
-                .body(logoutData)
-                .when()
-                .post("/auth/logout/")
-                .then()
-                .spec(emptyLogoutResponseSpec)
-                .extract().as(EmptyLogoutResponseModel.class);
+        EmptyLogoutResponseModel logoutResponse = step("Отправка токена под неавторизованным пользователем", () -> {
+            String refresh = "";
+            LogoutBodyModel logoutData = new LogoutBodyModel(refresh);
+            return given(RequestSpec)
+                    .body(logoutData)
+                    .when()
+                    .post("/auth/logout/")
+                    .then()
+                    .spec(emptyLogoutResponseSpec)
+                    .extract().as(EmptyLogoutResponseModel.class);
+        });
+        step("Проверка текста ошибки", () -> {
+            String expectedRefresh = "This field may not be blank.";
+            String actualRefresh = logoutResponse.refresh().get(0);
 
-        String expectedRefresh = "This field may not be blank.";
-        String actualRefresh = logoutResponse.refresh().get(0);
-        assertThat(actualRefresh).isEqualTo(expectedRefresh);
+            assertThat(actualRefresh).isEqualTo(expectedRefresh);
         });
     }
 }
