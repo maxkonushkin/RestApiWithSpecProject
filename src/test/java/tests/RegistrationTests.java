@@ -5,12 +5,8 @@ import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import static io.qameta.allure.Allure.step;
-import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static specs.RequestSpec.RequestSpec;
-import static specs.registration.RegisterSpec.*;
 
 public class RegistrationTests extends TestBase {
 
@@ -28,17 +24,9 @@ public class RegistrationTests extends TestBase {
     @DisplayName("Успешная регистрация пользователя")
     public void successfulRegistrationTest() {
 
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
+        SuccessfulRegistrationResponseModel registrationResponse = api.users.register(registrationData);
 
-        SuccessfulRegistrationResponseModel registrationResponse = step("Регистрация нового пользователя", () -> {
-            RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
-            return given(RequestSpec)
-                    .body(registrationData)
-                    .when()
-                    .post("/users/register/")
-                    .then()
-                    .spec(successRegisterResponseSpec)
-                    .extract().as(SuccessfulRegistrationResponseModel.class);
-        });
         step("проверка ответа (201)", () -> {
             assertThat(registrationResponse.id()).isGreaterThan(0);
             assertThat(registrationResponse.username()).isEqualTo(username);
@@ -54,31 +42,16 @@ public class RegistrationTests extends TestBase {
 
 
     @Test
-    @DisplayName("Попытка повторной регистрации пользователя")
+    @DisplayName("Попытка повторной регистрации существующего пользователя")
     public void existingUserWrongRegistrationTest() {
 
         RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
+        SuccessfulRegistrationResponseModel firstRegistrationResponse = api.users.register(registrationData);
 
-        SuccessfulRegistrationResponseModel firstRegistrationResponse = step("Регистрация нового пользователя и проверка ответа (201)", () -> {
-            return given(RequestSpec)
-                    .body(registrationData)
-                    .when()
-                    .post("/users/register/")
-                    .then()
-                    .spec(successRegisterResponseSpec)
-                    .extract().as(SuccessfulRegistrationResponseModel.class);
-        });
         assertThat(firstRegistrationResponse.username()).isEqualTo(username);
 
-        ExistingUserResponseModel secondRegistrationResponse = step("Попытка повторной регистрации пользователя", () -> {
-            return given(RequestSpec)
-                    .body(registrationData)
-                    .when()
-                    .post("/users/register/")
-                    .then()
-                    .spec(wrongCredentialsRegisterResponseSpec)
-                    .extract().as(ExistingUserResponseModel.class);
-        });
+        ExistingUserResponseModel secondRegistrationResponse = api.users.wrongregister(registrationData);
+
         step("Проверка текста ошибки", () -> {
             String expectedError = "A user with that username already exists.";
             String actualError = secondRegistrationResponse.username().get(0);
@@ -91,19 +64,13 @@ public class RegistrationTests extends TestBase {
     @DisplayName("Попытка регистрации пользователя без пароля")
     public void withoutPasswordRegistrationTest() {
 
-        WithoutPasswordResponseModel registrationResponse = step("Попытка повторной регистрации пользователя", () -> {
-            RegistrationWithoutPasswordBodyModel registrationData = new RegistrationWithoutPasswordBodyModel(username);
-            return given(RequestSpec)
-                    .body(registrationData)
-                    .when()
-                    .post("/users/register/")
-                    .then()
-                    .spec(withoutPasswordRegisterResponseSpec)
-                    .extract().as(WithoutPasswordResponseModel.class);
-        });
+        RegistrationWithoutPasswordBodyModel registrationData = new RegistrationWithoutPasswordBodyModel(username);
+
+        WithoutPasswordResponseModel WithoutPasswordResponse = api.users.registerWithoutPassword(registrationData);
+
         step("Проверка текста ошибки", () -> {
             String expectedRefresh = "This field is required.";
-            String actualRefresh = registrationResponse.password().get(0);
+            String actualRefresh = WithoutPasswordResponse.password().get(0);
             assertThat(actualRefresh).isEqualTo(expectedRefresh);
         });
     }

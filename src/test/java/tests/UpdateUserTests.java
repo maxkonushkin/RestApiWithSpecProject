@@ -9,6 +9,7 @@ import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -33,49 +34,24 @@ public class UpdateUserTests extends TestBase {
     @Test
     @DisplayName("Успешное изменение пользователя методом patch")
     public void successfulPatchUpdateTest() {
-        step("Регистрация нового пользователя и проверка ответа (201)", () -> {
-            RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
+        SuccessfulRegistrationResponseModel registrationResponse = api.users.register(registrationData);
 
-            SuccessfulRegistrationResponseModel registrationResponse = given(RequestSpec)
-                    .body(registrationData)
-                    .when()
-                    .post("/users/register/")
-                    .then()
-                    .spec(successRegisterResponseSpec)
-                    .extract().as(SuccessfulRegistrationResponseModel.class);
+        assertThat(registrationResponse.id()).isGreaterThan(0);
+        assertThat(registrationResponse.username()).isEqualTo(username);
+        assertThat(registrationResponse.firstName()).isEqualTo("");
+        assertThat(registrationResponse.lastName()).isEqualTo("");
+        assertThat(registrationResponse.email()).isEqualTo("");
 
-            assertThat(registrationResponse.id()).isGreaterThan(0);
-            assertThat(registrationResponse.username()).isEqualTo(username);
-            assertThat(registrationResponse.firstName()).isEqualTo("");
-            assertThat(registrationResponse.lastName()).isEqualTo("");
-            assertThat(registrationResponse.email()).isEqualTo("");
+        String ipAddrRegexp = "^((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.){3}"
+                + "(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)$";
+        assertThat(registrationResponse.remoteAddr()).matches(ipAddrRegexp);
 
-            String ipAddrRegexp = "^((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.){3}"
-                    + "(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)$";
-            assertThat(registrationResponse.remoteAddr()).matches(ipAddrRegexp);
-        });
-        String accessToken = "Bearer " + step("Авторизация и получение токена", () -> {
-            LoginBodyModel loginData = new LoginBodyModel(username, password);
-            return given(RequestSpec)
-                    .body(loginData)
-                    .when()
-                    .post("/auth/token/")
-                    .then()
-                    .spec(successfulLoginResponseSpec)
-                    .extract()
-                    .path("access");
-        });
-        SuccessfulUpdateUserModel updateResponse = step("Отправка токена", () -> {
-            UpdateBodyModel updateData = new UpdateBodyModel(username, firstName, lastName, email);
-            return given(RequestSpec)
-                    .body(updateData)
-                    .header("Authorization", accessToken)
-                    .when()
-                    .patch("/users/me/")
-                    .then()
-                    .spec(successfulUpdateResponseSpec)
-                    .extract().as(SuccessfulUpdateUserModel.class);
-        });
+        LoginBodyModel loginData = new LoginBodyModel(username, password);
+        String accessToken = "Bearer " + api.auth.logoutlogin2(loginData);
+
+        SuccessfulUpdateUserModel updateResponse = api.auth.updatePatchlogin( new UpdateBodyModel(username, firstName, lastName, email), accessToken);
+
         step("Проверка обновлённых данных", () -> {
             assertThat(updateResponse.username()).isEqualTo(username);
             assertThat(updateResponse.firstName()).isEqualTo(firstName);
@@ -88,51 +64,24 @@ public class UpdateUserTests extends TestBase {
     @Test
     @DisplayName("Успешное изменение пользователя методом put")
     public void successfulPutUpdateTest() {
-        step("Регистрация нового пользователя и проверка ответа (201)", () -> {
-            RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
 
-            SuccessfulRegistrationResponseModel registrationResponse = given(RequestSpec)
-                    .body(registrationData)
-                    .when()
-                    .post("/users/register/")
-                    .then()
-                    .spec(successRegisterResponseSpec)
-                    .extract().as(SuccessfulRegistrationResponseModel.class);
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
+        SuccessfulRegistrationResponseModel registrationResponse = api.users.register(registrationData);
 
-            assertThat(registrationResponse.id()).isGreaterThan(0);
-            assertThat(registrationResponse.username()).isEqualTo(username);
-            assertThat(registrationResponse.firstName()).isEqualTo("");
-            assertThat(registrationResponse.lastName()).isEqualTo("");
-            assertThat(registrationResponse.email()).isEqualTo("");
+        assertThat(registrationResponse.id()).isGreaterThan(0);
+        assertThat(registrationResponse.username()).isEqualTo(username);
+        assertThat(registrationResponse.firstName()).isEqualTo("");
+        assertThat(registrationResponse.lastName()).isEqualTo("");
+        assertThat(registrationResponse.email()).isEqualTo("");
 
-            String ipAddrRegexp = "^((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.){3}"
-                    + "(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)$";
-            assertThat(registrationResponse.remoteAddr()).matches(ipAddrRegexp);
-        });
+        String ipAddrRegexp = "^((25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.){3}"
+                + "(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)$";
+        assertThat(registrationResponse.remoteAddr()).matches(ipAddrRegexp);
 
-        String accessToken = "Bearer " + step("Авторизация и получение токена", () -> {
-            LoginBodyModel loginData = new LoginBodyModel(username, password);
-            return given(RequestSpec)
-                    .body(loginData)
-                    .when()
-                    .post("/auth/token/")
-                    .then()
-                    .spec(successfulLoginResponseSpec)
-                    .extract()
-                    .path("access");
-        });
+        LoginBodyModel loginData = new LoginBodyModel(username, password);
+        String accessToken = "Bearer " + api.auth.logoutlogin2(loginData);
 
-        SuccessfulUpdateUserModel updateResponse = step("Отправка токена", () -> {
-            UpdateBodyModel updateData = new UpdateBodyModel(username, firstName, lastName, email);
-            return given(RequestSpec)
-                    .body(updateData)
-                    .header("Authorization", accessToken)
-                    .when()
-                    .put("/users/me/")
-                    .then()
-                    .spec(successfulUpdateResponseSpec)
-                    .extract().as(SuccessfulUpdateUserModel.class);
-        });
+        SuccessfulUpdateUserModel updateResponse = api.auth.updatePutlogin( new UpdateBodyModel(username, firstName, lastName, email), accessToken);
         step("Проверка обновлённых данных", () -> {
             assertThat(updateResponse.username()).isEqualTo(username);
             assertThat(updateResponse.firstName()).isEqualTo(firstName);
