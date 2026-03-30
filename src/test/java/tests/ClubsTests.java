@@ -85,7 +85,7 @@ public class ClubsTests extends TestBase {
         ClubsListResponseModel response = api.clubs.getClubs();
 
         assertThat(response.count()).isNotNull();
-        // next и previous могут быть null при одной странице
+
         assertThat(response.results()).isNotNull();
     }
 
@@ -97,7 +97,7 @@ public class ClubsTests extends TestBase {
         SuccessfulRegistrationResponseModel registrationResponse = api.users.register(registrationData);
 
         LoginBodyModel loginData = new LoginBodyModel(username, password);
-        String accessToken = "Bearer " + api.auth.logoutlogin2(loginData);
+        String accessToken = "Bearer " + api.auth.loginWithAccessToken(loginData);
 
         CreateClubRequestModel createClub = new CreateClubRequestModel(bookTitle, bookAuthors, publicationYear, description, telegram_link);
 
@@ -127,7 +127,7 @@ public class ClubsTests extends TestBase {
         SuccessfulRegistrationResponseModel registrationResponse = api.users.register(registrationData);
 
         LoginBodyModel loginData = new LoginBodyModel(username, password);
-        String accessToken = "Bearer " + api.auth.logoutlogin2(loginData);
+        String accessToken = "Bearer " + api.auth.loginWithAccessToken(loginData);
 
         CreateClubRequestModel createClub = new CreateClubRequestModel(bookTitle, bookAuthors, publicationYear, description, telegram_link);
 
@@ -172,7 +172,7 @@ public class ClubsTests extends TestBase {
         SuccessfulRegistrationResponseModel registrationResponse = api.users.register(registrationData);
 
         LoginBodyModel loginData = new LoginBodyModel(username, password);
-        String accessToken = "Bearer " + api.auth.logoutlogin2(loginData);
+        String accessToken = "Bearer " + api.auth.loginWithAccessToken(loginData);
 
         CreateClubRequestModel createClub = new CreateClubRequestModel(bookTitle, bookAuthors, publicationYear, description, telegram_link);
 
@@ -220,7 +220,7 @@ public class ClubsTests extends TestBase {
         SuccessfulRegistrationResponseModel registrationResponse = api.users.register(registrationData);
 
         LoginBodyModel loginData = new LoginBodyModel(username, password);
-        String accessToken = "Bearer " + api.auth.logoutlogin2(loginData);
+        String accessToken = "Bearer " + api.auth.loginWithAccessToken(loginData);
 
         CreateClubRequestModel createClub = new CreateClubRequestModel(bookTitle, bookAuthors, publicationYear, description, telegram_link);
 

@@ -11,12 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
-import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static specs.RequestSpec.RequestSpec;
-import static specs.login.LoginSpec.successfulLoginResponseSpec;
-import static specs.registration.RegisterSpec.successRegisterResponseSpec;
-import static specs.update.UpdateSpec.*;
 
 public class UpdateUserTests extends TestBase {
     String username;
@@ -48,9 +43,9 @@ public class UpdateUserTests extends TestBase {
         assertThat(registrationResponse.remoteAddr()).matches(ipAddrRegexp);
 
         LoginBodyModel loginData = new LoginBodyModel(username, password);
-        String accessToken = "Bearer " + api.auth.logoutlogin2(loginData);
+        String accessToken = "Bearer " + api.auth.loginWithAccessToken(loginData);
 
-        SuccessfulUpdateUserModel updateResponse = api.auth.updatePatchlogin( new UpdateBodyModel(username, firstName, lastName, email), accessToken);
+        SuccessfulUpdateUserModel updateResponse = api.auth.updatePatchlogin(new UpdateBodyModel(username, firstName, lastName, email), accessToken);
 
         step("Проверка обновлённых данных", () -> {
             assertThat(updateResponse.username()).isEqualTo(username);
@@ -79,9 +74,9 @@ public class UpdateUserTests extends TestBase {
         assertThat(registrationResponse.remoteAddr()).matches(ipAddrRegexp);
 
         LoginBodyModel loginData = new LoginBodyModel(username, password);
-        String accessToken = "Bearer " + api.auth.logoutlogin2(loginData);
+        String accessToken = "Bearer " + api.auth.loginWithAccessToken(loginData);
 
-        SuccessfulUpdateUserModel updateResponse = api.auth.updatePutlogin( new UpdateBodyModel(username, firstName, lastName, email), accessToken);
+        SuccessfulUpdateUserModel updateResponse = api.auth.updatePutlogin(new UpdateBodyModel(username, firstName, lastName, email), accessToken);
         step("Проверка обновлённых данных", () -> {
             assertThat(updateResponse.username()).isEqualTo(username);
             assertThat(updateResponse.firstName()).isEqualTo(firstName);

@@ -20,8 +20,8 @@ public class ClubsApiClient {
                 .as(ClubsListResponseModel.class);
     }
 
-    @Step("Создание книжного клуба")
-    public CreateClubResponseModel clubCreate (CreateClubRequestModel clubData, String accessToken) {
+    @Step("Создание клуба")
+    public CreateClubResponseModel clubCreate(CreateClubRequestModel clubData, String accessToken) {
         return given(RequestSpec)
                 .body(clubData)
                 .header("Authorization", accessToken)
@@ -32,8 +32,8 @@ public class ClubsApiClient {
                 .extract().as(CreateClubResponseModel.class);
     }
 
-    @Step("Успешный просмотр созданного книжного клуба")
-    public GetClubModel clubGet (int clubId, String accessToken) {
+    @Step("Просмотр клуба")
+    public GetClubModel clubGet(int clubId, String accessToken) {
         return given(RequestSpec)
                 .header("Authorization", accessToken)
                 .when()
@@ -43,8 +43,8 @@ public class ClubsApiClient {
                 .extract().as(GetClubModel.class);
     }
 
-    @Step("Обновление книжного клуба")
-    public UpdateClubPutResponseBodyModel clubPutUpdate (int clubId, UpdateClubPutRequestBodyModel clubData, String accessToken) {
+    @Step("Обновление клуба")
+    public UpdateClubPutResponseBodyModel clubPutUpdate(int clubId, UpdateClubPutRequestBodyModel clubData, String accessToken) {
         return given(RequestSpec)
                 .body(clubData)
                 .header("Authorization", accessToken)
@@ -55,8 +55,8 @@ public class ClubsApiClient {
                 .extract().as(UpdateClubPutResponseBodyModel.class);
     }
 
-    @Step("Успешное удаление книжного клуба")
-    public void clubDelete (int clubId, String accessToken) {
+    @Step("Удаление клуба")
+    public void clubDelete(int clubId, String accessToken) {
         given(RequestSpec)
                 .header("Authorization", accessToken)
                 .when()
@@ -64,8 +64,9 @@ public class ClubsApiClient {
                 .then()
                 .spec(successfulDeleteSpec);
     }
-    @Step("Запрос несуществующего книжного клуба")
-    public GetNotExistingClubResponseBodyModel getNotExistingClub (int clubId, String accessToken) {
+
+    @Step("Поиск удалённого клуба")
+    public GetNotExistingClubResponseBodyModel getNotExistingClub(int clubId, String accessToken) {
         return given(RequestSpec)
                 .header("Authorization", accessToken)
                 .when()

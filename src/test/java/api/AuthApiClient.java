@@ -8,12 +8,10 @@ import models.logout.EmptyLogoutResponseModel;
 import models.logout.LogoutBodyModel;
 import models.update.SuccessfulUpdateUserModel;
 import models.update.UpdateBodyModel;
-
-import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
-import static java.lang.String.format;
 import static specs.RequestSpec.RequestSpec;
 import static specs.login.LoginSpec.successfulLoginResponseSpec;
+import static specs.login.LoginSpec.wrongCredentialsLoginResponseSpec;
 import static specs.logout.LogoutSpec.emptyLogoutResponseSpec;
 import static specs.logout.LogoutSpec.successfulLogoutResponseSpec;
 import static specs.update.UpdateSpec.successfulUpdateResponseSpec;
@@ -34,7 +32,7 @@ public class AuthApiClient {
     }
 
     @Step("Ввод логина и пароля и получение токена")
-    public String logoutlogin(LoginBodyModel loginBody) {
+    public String loginWithRefreshToken(LoginBodyModel loginBody) {
         return given(RequestSpec)
                 .body(loginBody)
                 .when()
@@ -46,7 +44,7 @@ public class AuthApiClient {
     }
 
     @Step("Ввод логина и пароля и получение токена")
-    public String logoutlogin2(LoginBodyModel loginBody) {
+    public String loginWithAccessToken(LoginBodyModel loginBody) {
         return given(RequestSpec)
                 .body(loginBody)
                 .when()
@@ -69,7 +67,7 @@ public class AuthApiClient {
 
     @Step("Отправка запроса logout с пустым токеном")
     public EmptyLogoutResponseModel emptylogout(LogoutBodyModel logoutBody) {
-       return given(RequestSpec)
+        return given(RequestSpec)
                 .body(logoutBody)
                 .when()
                 .post("/auth/logout/")
@@ -98,7 +96,7 @@ public class AuthApiClient {
                 .when()
                 .put("/users/me/")
                 .then()
-                .spec(successfulUpdateResponseSpec)
+                .spec(wrongCredentialsLoginResponseSpec)
                 .extract().as(SuccessfulUpdateUserModel.class);
     }
 
@@ -110,7 +108,7 @@ public class AuthApiClient {
                 .when()
                 .post("/auth/token/")
                 .then()
-                .spec(successfulLoginResponseSpec)
+                .spec(wrongCredentialsLoginResponseSpec)
                 .extract()
                 .as(WrongCredentialsLoginResponseModel.class);
 

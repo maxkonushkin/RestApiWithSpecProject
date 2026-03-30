@@ -18,7 +18,7 @@ public class LogoutTests extends TestBase {
     public void successfulLogoutTest() {
 
         LoginBodyModel loginData = new LoginBodyModel(username, password);
-        String refreshToken = api.auth.logoutlogin(loginData);
+        String refreshToken = api.auth.loginWithRefreshToken(loginData);
 
         LogoutBodyModel logoutData = new LogoutBodyModel(refreshToken);
         api.auth.logout(logoutData);
