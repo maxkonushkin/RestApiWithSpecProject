@@ -11,12 +11,12 @@ import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
+import static tests.TestData.password;
 
 public class ClubsTests extends TestBase {
 
     String remote_club_error = "No Club matches the given query.";
     String username;
-    String password = "1234";
     String bookTitle;
     String updatedBookTitle;
     String bookAuthors;

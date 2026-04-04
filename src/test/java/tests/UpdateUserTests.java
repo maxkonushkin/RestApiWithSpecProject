@@ -12,13 +12,13 @@ import org.junit.jupiter.api.Test;
 
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
+import static tests.TestData.password;
 
 public class UpdateUserTests extends TestBase {
     String username;
     String firstName = "maksim";
     String lastName = "ivanov";
     String email = "mkon@gmail.com";
-    String password = "1234";
 
     @BeforeEach
     public void prepareTestData() {
