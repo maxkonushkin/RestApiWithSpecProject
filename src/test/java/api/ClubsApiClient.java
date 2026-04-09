@@ -32,6 +32,18 @@ public class ClubsApiClient {
                 .extract().as(CreateClubResponseModel.class);
     }
 
+    @Step("Создание клуба для ревью")
+    public CreateClubResponseModelFromReview clubCreate2(CreateClubRequestModel clubData, String accessToken) {
+        return given(RequestSpec)
+                .body(clubData)
+                .header("Authorization", accessToken)
+                .when()
+                .post("/clubs/")
+                .then()
+                .spec(successfulClubCreateSpec)
+                .extract().as(CreateClubResponseModelFromReview.class);
+    }
+
     @Step("Просмотр клуба")
     public GetClubModel clubGet(int clubId, String accessToken) {
         return given(RequestSpec)
