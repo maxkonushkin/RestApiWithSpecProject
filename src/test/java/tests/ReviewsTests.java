@@ -7,6 +7,7 @@ import models.login.LoginBodyModel;
 import models.registration.RegistrationBodyModel;
 import models.registration.SuccessfulRegistrationResponseModel;
 import models.review.CreateReviewRequestModel;
+import models.review.GetReviewResponseModel;
 import models.review.SuccessfulReviewResponseModel;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,7 +58,7 @@ public class ReviewsTests extends TestBase {
 
     @Test
     @DisplayName("Успешная регистрация клуба и добавление ревью")
-    public void successfulClubCreationTest() {
+    public void successfulClubCreationAndReviewTest() {
 
         RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
         SuccessfulRegistrationResponseModel registrationResponse = api.users.register(registrationData);
@@ -80,5 +81,58 @@ public class ReviewsTests extends TestBase {
             assertThat(newReview.readPages()).isEqualTo(createReview.readPages());
 
         });
+    }
+
+
+    @Test
+    @DisplayName("Получение добавленного ревью")
+    public void successfulGetReviewTest() {
+
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
+        SuccessfulRegistrationResponseModel registrationResponse = api.users.register(registrationData);
+
+        LoginBodyModel loginData = new LoginBodyModel(username, password);
+        String accessToken = "Bearer " + api.auth.loginWithAccessToken(loginData);
+
+        CreateClubRequestModel createClub = new CreateClubRequestModel(bookTitle, bookAuthors, publicationYear, description, telegram_link);
+
+        CreateClubResponseModelFromReview createClubBodyModel = api.clubs.clubCreate2(createClub, accessToken);
+
+        CreateReviewRequestModel createReview = new CreateReviewRequestModel(createClubBodyModel.id(), review,
+                assessment, readPages);
+        SuccessfulReviewResponseModel newReview = api.review.createReviewBody(createReview, accessToken);
+
+        GetReviewResponseModel getReview = api.review.getReviewBody(newReview.id(), accessToken);
+
+        step("Проверка значений созданного обзора", () -> {
+
+            assertThat(getReview.review()).isEqualTo(createReview.review());
+            assertThat(getReview.assessment()).isEqualTo(createReview.assessment());
+            assertThat(getReview.readPages()).isEqualTo(createReview.readPages());
+
+        });
+
+    }
+
+    @Test
+    @DisplayName("Успешное удаление ревью")
+    public void successfulDeleteReviewTest() {
+
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
+        SuccessfulRegistrationResponseModel registrationResponse = api.users.register(registrationData);
+
+        LoginBodyModel loginData = new LoginBodyModel(username, password);
+        String accessToken = "Bearer " + api.auth.loginWithAccessToken(loginData);
+
+        CreateClubRequestModel createClub = new CreateClubRequestModel(bookTitle, bookAuthors, publicationYear, description, telegram_link);
+
+        CreateClubResponseModelFromReview createClubBodyModel = api.clubs.clubCreate2(createClub, accessToken);
+
+        CreateReviewRequestModel createReview = new CreateReviewRequestModel(createClubBodyModel.id(), review,
+                assessment, readPages);
+        SuccessfulReviewResponseModel newReview = api.review.createReviewBody(createReview, accessToken);
+
+        api.review.deleteReviewBody(newReview.id(), accessToken);
+
     }
 }
