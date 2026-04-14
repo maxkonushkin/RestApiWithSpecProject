@@ -3,6 +3,7 @@ package api;
 import io.qameta.allure.Step;
 import models.review.CreateReviewRequestModel;
 import models.review.GetReviewResponseModel;
+import models.review.PutReviewRequestModel;
 import models.review.SuccessfulReviewResponseModel;
 
 import static io.restassured.RestAssured.given;
@@ -43,5 +44,17 @@ public class ReviewApiClient {
                 .delete("/clubs/reviews/" + reviewId + "/")
                 .then()
                 .spec(successfulDeleteReviewResponseSpec);
+    }
+
+    @Step("Успешное изменение в обзор на книгу")
+    public SuccessfulReviewResponseModel putReviewBody(int reviewId, PutReviewRequestModel reviewData, String accessToken){
+        return given(RequestSpec)
+                .body(reviewData)
+                .header("Authorization", accessToken)
+                .when()
+                .put("/clubs/reviews/" + reviewId + "/")
+                .then()
+                .spec(successfulPutReviewResponseSpec)
+                .extract().as(SuccessfulReviewResponseModel.class);
     }
 }

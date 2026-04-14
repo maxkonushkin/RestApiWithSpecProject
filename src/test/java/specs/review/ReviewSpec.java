@@ -26,4 +26,11 @@ public class ReviewSpec {
             .log(ALL)
             .expectStatusCode(204)
             .build();
+
+    public static ResponseSpecification successfulPutReviewResponseSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(200)
+            .expectBody(matchesJsonSchemaInClasspath(
+                    "schemas/review/successful_put_review_response_schema.json"))
+            .build();
 }
