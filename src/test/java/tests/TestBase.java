@@ -2,8 +2,15 @@ package tests;
 
 import api.ApiClient;
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.WebDriverRunner;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
 import io.restassured.RestAssured;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+
+import static com.codeborne.selenide.Selenide.closeWebDriver;
 
 public class TestBase {
 
@@ -15,7 +22,10 @@ public class TestBase {
 
     protected static final ApiClient api = new ApiClient();
 
-
+    @BeforeEach
+    void addListener() {
+        SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
+    }
 
     @BeforeAll
     public static void setUp() {
@@ -28,4 +38,7 @@ public class TestBase {
 
         Configuration.baseUrl = "https://book-club.qa.guru";
     }
+
+
+
 }
