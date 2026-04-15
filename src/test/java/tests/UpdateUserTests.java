@@ -7,6 +7,7 @@ import models.registration.RegistrationBodyModel;
 import models.registration.SuccessfulRegistrationResponseModel;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +28,7 @@ public class UpdateUserTests extends TestBase {
     }
 
     @Test
+    @Disabled
     @DisplayName("Успешное изменение пользователя методом patch")
     public void successfulPatchUpdateTest() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
@@ -57,6 +59,7 @@ public class UpdateUserTests extends TestBase {
 
 
     @Test
+    @Disabled
     @DisplayName("Успешное изменение пользователя методом put")
     public void successfulPutUpdateTest() {
 

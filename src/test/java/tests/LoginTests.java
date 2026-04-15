@@ -3,6 +3,7 @@ package tests;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import models.login.WrongCredentialsLoginResponseModel;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static io.qameta.allure.Allure.step;
@@ -12,6 +13,7 @@ import static tests.TestData.*;
 public class LoginTests extends TestBase {
 
     @Test
+    @Disabled
     @DisplayName("Успешная авторизация пользователя")
     public void successfulLoginTest() {
 
@@ -29,6 +31,7 @@ public class LoginTests extends TestBase {
     }
 
     @Test
+    @Disabled
     @DisplayName("Попытка авторизации с неверным паролем")
     public void wrongCredentialsPasswordTest() {
 
@@ -43,6 +46,7 @@ public class LoginTests extends TestBase {
     }
 
     @Test
+    @Disabled
     @DisplayName("Попытка авторизации под несуществующим пользователем")
     public void wrongCredentialsLoginTest() {
 

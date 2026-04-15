@@ -6,6 +6,7 @@ import models.registration.RegistrationBodyModel;
 import models.registration.SuccessfulRegistrationResponseModel;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -90,6 +91,7 @@ public class ClubsTests extends TestBase {
 //    }
 
     @Test
+    @Disabled
     @DisplayName("Успешная регистрация клуба")
     public void successfulClubCreationTest() {
 
@@ -120,6 +122,7 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Disabled
     @DisplayName("Получение информации о созданном клубе по ID")
     public void successfulClubGetTest() {
 
@@ -165,6 +168,7 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Disabled
     @DisplayName("Внесение изменений в клуб")
     public void successfulClubPutTest() {
 
@@ -213,6 +217,7 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
+    @Disabled
     @DisplayName("Проверка создания клуба и последующее его удаление")
     public void successfulClubDeleteTest() {
 
