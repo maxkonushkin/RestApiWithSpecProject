@@ -1,6 +1,7 @@
 package tests;
 
 import models.clubs.CreateClubRequestModel;
+import models.clubs.CreateClubResponseModel;
 import models.clubs.CreateClubResponseModelFromReview;
 import models.localStorage.LocalStorageAuthRequestBody;
 import models.localStorage.UserData;
@@ -17,9 +18,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.ClubPages;
+
+import static com.codeborne.selenide.Condition.visible;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 import static tests.TestData.password;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -27,7 +31,7 @@ public class ReviewsTests extends TestBase {
 
     ClubPages clubsPage = new ClubPages();
 
-    String remote_club_error = "No Club matches the given query.";
+//    String remote_club_error = "No Club matches the given query.";
     String username;
     String bookTitle;
     String updatedBookTitle;
@@ -51,10 +55,10 @@ public class ReviewsTests extends TestBase {
         username = faker.name().firstName() + "_new";
         telegram_link = faker.internet().url();
         updatedTelegram_link = faker.internet().url();
-        bookTitle = faker.book().title() + " " + faker.naruto().character() + " " + faker.battlefield1().weapon();
-        updatedBookTitle = faker.book().title() + " " + faker.naruto().eye() + " " + faker.battlefield1().map();
-        bookAuthors = faker.book().author();
-        updatedBookAuthors = faker.book().author();
+        bookTitle = faker.book().title() + "_new";
+        updatedBookTitle = faker.book().title() + "_update";
+        bookAuthors = faker.book().author() + "_new";
+        updatedBookAuthors = faker.book().author() + "_new";
         publicationYear = faker.number().numberBetween(1, 2026);
         updatedPublicationYear = faker.number().numberBetween(1, 2026);
         description = faker.book().genre() + " " + faker.book().publisher();
@@ -194,12 +198,57 @@ public class ReviewsTests extends TestBase {
         try {
             authJson = new ObjectMapper().writeValueAsString(localStorageAuthBody);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Ошибка конвертации объекта в JSON", e);
+            throw new RuntimeException("Ошибка конвертации");
         }
         CreateClubRequestModel createClub = new CreateClubRequestModel(bookTitle, bookAuthors, publicationYear, description, telegram_link);
         CreateClubResponseModelFromReview createClubBodyModel = api.clubs.clubCreate2(createClub, accessToken);
 
         clubsPage.openPage(authJson)
-                .openClubPage(createClubBodyModel.id());
+                .openClubPage(createClubBodyModel.id())
+                .addReview()
+                .setReviewInput(review)
+                .saveButton();
     }
+
+    @Test
+    @DisplayName("Успешное добавление обзора через API и удаление его через UI")
+    public void successfulClubCreationApiAndDeleteReviewUiTest() {
+
+        RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
+        SuccessfulRegistrationResponseModel registrationResponse = api.users.register(registrationData);
+
+        LoginBodyModel loginData = new LoginBodyModel(username, password);
+        String accessToken = "Bearer " + api.auth.loginWithAccessToken(loginData);
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
+
+        UserData userData = new UserData(registrationResponse.id(),
+                registrationResponse.username(),
+                registrationResponse.firstName(),
+                registrationResponse.lastName(),
+                registrationResponse.email(),
+                registrationResponse.remoteAddr());
+        LocalStorageAuthRequestBody localStorageAuthBody = new LocalStorageAuthRequestBody
+                (userData, loginResponse.access(), loginResponse.refresh(), true);
+
+        String authJson;
+        try {
+            authJson = new ObjectMapper().writeValueAsString(localStorageAuthBody);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Ошибка конвертации");
+        }
+        CreateClubRequestModel createClub = new CreateClubRequestModel(bookTitle, bookAuthors, publicationYear, description, telegram_link);
+        CreateClubResponseModelFromReview createClubBodyModel = api.clubs.clubCreate2(createClub, accessToken);
+
+        CreateReviewRequestModel createReview = new CreateReviewRequestModel(createClubBodyModel.id(), review,
+                assessment, readPages);
+        SuccessfulReviewResponseModel newReview = api.review.createReviewBody(createReview, accessToken);
+
+        GetReviewResponseModel getReview = api.review.getReviewBody(newReview.id(), accessToken);
+
+        clubsPage.openPage(authJson)
+                .openClubPage(createClubBodyModel.id())
+                .deleteReview()
+                .getReview().shouldNotBe(visible);
+    }
+
 }
