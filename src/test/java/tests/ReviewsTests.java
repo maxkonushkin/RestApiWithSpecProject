@@ -52,7 +52,7 @@ public class ReviewsTests extends TestBase {
     @BeforeEach
     public void prepareTestData() {
         Faker faker = new Faker();
-        username = faker.name().firstName() + "_new";
+        username = faker.name().firstName() + "_new2";
         telegram_link = faker.internet().url();
         updatedTelegram_link = faker.internet().url();
         bookTitle = faker.book().title() + "_new";
