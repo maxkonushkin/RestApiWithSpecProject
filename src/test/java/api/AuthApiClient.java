@@ -96,7 +96,7 @@ public class AuthApiClient {
                 .when()
                 .put("/users/me/")
                 .then()
-                .spec(wrongCredentialsLoginResponseSpec)
+                .spec(successfulUpdateResponseSpec)
                 .extract().as(SuccessfulUpdateUserModel.class);
     }
 
