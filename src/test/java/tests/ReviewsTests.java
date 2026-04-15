@@ -55,7 +55,7 @@ public class ReviewsTests extends TestBase {
         username = faker.name().firstName() + "_new2";
         telegram_link = faker.internet().url();
         updatedTelegram_link = faker.internet().url();
-        bookTitle = faker.book().title() + "_new";
+        bookTitle = faker.book().title() + "_new2";
         updatedBookTitle = faker.book().title() + "_update";
         bookAuthors = faker.book().author() + "_new";
         updatedBookAuthors = faker.book().author() + "_new";
