@@ -19,8 +19,6 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 public class TestBase {
 
     public static String browser = System.getProperty("browser", "chrome");
-//    public static String remoteBaseUsername = System.getProperty("remoteBaseUsername");
-//    public static String remoteBasePass = System.getProperty("remoteBasePass");
     public static String remoteUrl = System.getProperty("remoteUrl");
 
     protected static final ApiClient api = new ApiClient();
@@ -30,9 +28,6 @@ public class TestBase {
 
         RestAssured.baseURI = "https://book-club.qa.guru";
         RestAssured.basePath = "/api/v1";
-//        if (remoteBaseUrl != null) {
-//            Configuration.remote = "https://" + remoteBaseUsername + ":" + remoteBasePass + "@" + remoteBaseUrl;
-//        }
 
         Configuration.remote = remoteUrl;
         Configuration.baseUrl = "https://book-club.qa.guru";

@@ -50,13 +50,13 @@ public class ReviewsTests extends TestBase {
     @BeforeEach
     public void prepareTestData() {
         Faker faker = new Faker();
-        username = faker.name().firstName() + "_new2";
+        username = faker.name().firstName() + "_new3";
         telegram_link = faker.internet().url();
         updatedTelegram_link = faker.internet().url();
-        bookTitle = faker.book().title() + "_new2";
+        bookTitle = faker.book().title() + "_new3";
         updatedBookTitle = faker.book().title() + "_update";
-        bookAuthors = faker.book().author() + "_new";
-        updatedBookAuthors = faker.book().author() + "_new";
+        bookAuthors = faker.book().author() + "_new3";
+        updatedBookAuthors = faker.book().author() + "_new3";
         publicationYear = faker.number().numberBetween(1, 2026);
         updatedPublicationYear = faker.number().numberBetween(1, 2026);
         description = faker.book().genre() + " " + faker.book().publisher();
