@@ -19,8 +19,8 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 public class TestBase {
 
     public static String browser = System.getProperty("browser", "chrome");
-    public static String remoteBaseUsername = System.getProperty("remoteBaseUsername");
-    public static String remoteBasePass = System.getProperty("remoteBasePass");
+//    public static String remoteBaseUsername = System.getProperty("remoteBaseUsername");
+//    public static String remoteBasePass = System.getProperty("remoteBasePass");
     public static String remoteUrl = System.getProperty("remoteUrl");
 
     protected static final ApiClient api = new ApiClient();
