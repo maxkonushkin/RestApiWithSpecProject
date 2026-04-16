@@ -1,7 +1,6 @@
 package tests;
 
 import models.clubs.CreateClubRequestModel;
-import models.clubs.CreateClubResponseModel;
 import models.clubs.CreateClubResponseModelFromReview;
 import models.localStorage.LocalStorageAuthRequestBody;
 import models.localStorage.UserData;
@@ -31,7 +30,6 @@ public class ReviewsTests extends TestBase {
 
     ClubPages clubsPage = new ClubPages();
 
-//    String remote_club_error = "No Club matches the given query.";
     String username;
     String bookTitle;
     String updatedBookTitle;

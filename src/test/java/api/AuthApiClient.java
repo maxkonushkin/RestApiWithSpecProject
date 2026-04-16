@@ -8,6 +8,7 @@ import models.logout.EmptyLogoutResponseModel;
 import models.logout.LogoutBodyModel;
 import models.update.SuccessfulUpdateUserModel;
 import models.update.UpdateBodyModel;
+
 import static io.restassured.RestAssured.given;
 import static specs.RequestSpec.RequestSpec;
 import static specs.login.LoginSpec.successfulLoginResponseSpec;

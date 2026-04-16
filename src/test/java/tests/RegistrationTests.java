@@ -3,7 +3,6 @@ package tests;
 import models.registration.*;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static io.qameta.allure.Allure.step;

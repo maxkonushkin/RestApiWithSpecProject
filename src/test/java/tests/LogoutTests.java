@@ -3,7 +3,6 @@ package tests;
 import models.login.LoginBodyModel;
 import models.logout.EmptyLogoutResponseModel;
 import models.logout.LogoutBodyModel;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static io.qameta.allure.Allure.step;

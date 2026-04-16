@@ -26,7 +26,7 @@ public class ReviewApiClient {
     }
 
     @Step("Успешный просмотр обзора на книгу")
-    public GetReviewResponseModel getReviewBody(int reviewId, String accessToken){
+    public GetReviewResponseModel getReviewBody(int reviewId, String accessToken) {
         return given(RequestSpec)
                 .header("Authorization", accessToken)
                 .when()
@@ -37,7 +37,7 @@ public class ReviewApiClient {
     }
 
     @Step("Успешное удаление обзора на книгу")
-    public void deleteReviewBody(int reviewId, String accessToken){
+    public void deleteReviewBody(int reviewId, String accessToken) {
         given(RequestSpec)
                 .header("Authorization", accessToken)
                 .when()
@@ -47,7 +47,7 @@ public class ReviewApiClient {
     }
 
     @Step("Успешное изменение в обзор на книгу")
-    public SuccessfulReviewResponseModel putReviewBody(int reviewId, PutReviewRequestModel reviewData, String accessToken){
+    public SuccessfulReviewResponseModel putReviewBody(int reviewId, PutReviewRequestModel reviewData, String accessToken) {
         return given(RequestSpec)
                 .body(reviewData)
                 .header("Authorization", accessToken)
