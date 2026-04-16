@@ -28,7 +28,6 @@ public class UpdateUserTests extends TestBase {
     }
 
     @Test
-    @Disabled
     @DisplayName("Успешное изменение пользователя методом patch")
     public void successfulPatchUpdateTest() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
@@ -59,7 +58,6 @@ public class UpdateUserTests extends TestBase {
 
 
     @Test
-    @Disabled
     @DisplayName("Успешное изменение пользователя методом put")
     public void successfulPutUpdateTest() {
 

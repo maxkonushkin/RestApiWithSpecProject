@@ -46,52 +46,55 @@ public class ClubsTests extends TestBase {
         updatedDescription = faker.book().genre() + " " + faker.book().publisher();
     }
 
-//    @Test
-//    public void getClubsReturns200AndValidStructure() {
-//        ClubsListResponseModel response = api.clubs.getClubs();
-//
-//        assertThat(response).isNotNull();
-//        assertThat(response.count()).isGreaterThanOrEqualTo(0);
-//        assertThat(response.results()).isNotNull();
-//        assertThat(response.results()).hasSize(response.count());
-//    }
-//
-//    @Test
-//    public void getClubsCountMatchesResultsSize() {
-//        ClubsListResponseModel response = api.clubs.getClubs();
-//
-//        assertThat(response.results()).as("count должно совпадать с размером results").hasSize(response.count());
-//    }
-//
-//    @Test
-//    public void getClubsEachClubHasRequiredFields() {
-//        ClubsListResponseModel response = api.clubs.getClubs();
-//
-//        for (ClubModel club : response.results()) {
-//            assertThat(club.id()).isNotNull().isPositive();
-//            assertThat(club.bookTitle()).isNotNull();
-//            assertThat(club.bookAuthors()).isNotNull();
-//            assertThat(club.publicationYear()).isNotNull();
-//            assertThat(club.description()).isNotNull();
-//            assertThat(club.telegramChatLink()).isNotNull();
-//            assertThat(club.owner()).isNotNull().isPositive();
-//            assertThat(club.members()).isNotNull();
-//            assertThat(club.reviews()).isNotNull();
-//            assertThat(club.created()).isNotNull();
-//        }
-//    }
-//
-//    @Test
-//    public void getClubsPaginationFieldsPresent() {
-//        ClubsListResponseModel response = api.clubs.getClubs();
-//
-//        assertThat(response.count()).isNotNull();
-//
-//        assertThat(response.results()).isNotNull();
-//    }
+    @Test
+    @Disabled
+    public void getClubsReturns200AndValidStructure() {
+        ClubsListResponseModel response = api.clubs.getClubs();
+
+        assertThat(response).isNotNull();
+        assertThat(response.count()).isGreaterThanOrEqualTo(0);
+        assertThat(response.results()).isNotNull();
+        assertThat(response.results()).hasSize(response.count());
+    }
 
     @Test
     @Disabled
+    public void getClubsCountMatchesResultsSize() {
+        ClubsListResponseModel response = api.clubs.getClubs();
+
+        assertThat(response.results()).as("count должно совпадать с размером results").hasSize(response.count());
+    }
+
+    @Test
+    @Disabled
+    public void getClubsEachClubHasRequiredFields() {
+        ClubsListResponseModel response = api.clubs.getClubs();
+
+        for (ClubModel club : response.results()) {
+            assertThat(club.id()).isNotNull().isPositive();
+            assertThat(club.bookTitle()).isNotNull();
+            assertThat(club.bookAuthors()).isNotNull();
+            assertThat(club.publicationYear()).isNotNull();
+            assertThat(club.description()).isNotNull();
+            assertThat(club.telegramChatLink()).isNotNull();
+            assertThat(club.owner()).isNotNull().isPositive();
+            assertThat(club.members()).isNotNull();
+            assertThat(club.reviews()).isNotNull();
+            assertThat(club.created()).isNotNull();
+        }
+    }
+
+    @Test
+    @Disabled
+    public void getClubsPaginationFieldsPresent() {
+        ClubsListResponseModel response = api.clubs.getClubs();
+
+        assertThat(response.count()).isNotNull();
+
+        assertThat(response.results()).isNotNull();
+    }
+
+    @Test
     @DisplayName("Успешная регистрация клуба")
     public void successfulClubCreationTest() {
 
@@ -122,7 +125,6 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
-    @Disabled
     @DisplayName("Получение информации о созданном клубе по ID")
     public void successfulClubGetTest() {
 
@@ -168,7 +170,6 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
-    @Disabled
     @DisplayName("Внесение изменений в клуб")
     public void successfulClubPutTest() {
 
@@ -217,7 +218,6 @@ public class ClubsTests extends TestBase {
     }
 
     @Test
-    @Disabled
     @DisplayName("Проверка создания клуба и последующее его удаление")
     public void successfulClubDeleteTest() {
 

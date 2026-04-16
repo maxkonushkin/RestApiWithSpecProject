@@ -22,7 +22,6 @@ public class RegistrationTests extends TestBase {
     }
 
     @Test
-    @Disabled
     @DisplayName("Успешная регистрация пользователя")
     public void successfulRegistrationTest() {
 
@@ -44,7 +43,6 @@ public class RegistrationTests extends TestBase {
 
 
     @Test
-    @Disabled
     @DisplayName("Попытка повторной регистрации существующего пользователя")
     public void existingUserWrongRegistrationTest() {
 
@@ -64,7 +62,6 @@ public class RegistrationTests extends TestBase {
 
 
     @Test
-    @Disabled
     @DisplayName("Попытка регистрации пользователя без пароля")
     public void withoutPasswordRegistrationTest() {
 

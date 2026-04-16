@@ -14,7 +14,6 @@ import static tests.TestData.username;
 public class LogoutTests extends TestBase {
 
     @Test
-    @Disabled
     @DisplayName("Успешная отправка токена и проверка ответа")
     public void successfulLogoutTest() {
 
@@ -31,7 +30,6 @@ public class LogoutTests extends TestBase {
     }
 
     @Test
-    @Disabled
     @DisplayName("Отправка пустого токена")
     public void emptyLogoutResponseTest() {
         String refresh = "";
