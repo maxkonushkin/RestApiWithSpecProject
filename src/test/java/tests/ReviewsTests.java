@@ -71,9 +71,7 @@ public class ReviewsTests extends TestBase {
     @DisplayName("Успешная регистрация клуба и добавление ревью")
     public void successfulClubCreationAndReviewTest() {
 
-        RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
-        SuccessfulRegistrationResponseModel registrationResponse = api.users.register(registrationData);
-
+        api.users.register(new RegistrationBodyModel(username, password));
         LoginBodyModel loginData = new LoginBodyModel(username, password);
         String accessToken = "Bearer " + api.auth.loginWithAccessToken(loginData);
 
@@ -99,9 +97,7 @@ public class ReviewsTests extends TestBase {
     @DisplayName("Получение добавленного ревью")
     public void successfulGetReviewTest() {
 
-        RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
-        SuccessfulRegistrationResponseModel registrationResponse = api.users.register(registrationData);
-
+        api.users.register(new RegistrationBodyModel(username, password));
         LoginBodyModel loginData = new LoginBodyModel(username, password);
         String accessToken = "Bearer " + api.auth.loginWithAccessToken(loginData);
 
@@ -129,9 +125,7 @@ public class ReviewsTests extends TestBase {
     @DisplayName("Успешное удаление ревью")
     public void successfulDeleteReviewTest() {
 
-        RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
-        SuccessfulRegistrationResponseModel registrationResponse = api.users.register(registrationData);
-
+        api.users.register(new RegistrationBodyModel(username, password));
         LoginBodyModel loginData = new LoginBodyModel(username, password);
         String accessToken = "Bearer " + api.auth.loginWithAccessToken(loginData);
 
@@ -151,9 +145,7 @@ public class ReviewsTests extends TestBase {
     @DisplayName("Успешное редактирование ревью")
     public void successfulPutReviewTest() {
 
-        RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
-        SuccessfulRegistrationResponseModel registrationResponse = api.users.register(registrationData);
-
+        api.users.register(new RegistrationBodyModel(username, password));
         LoginBodyModel loginData = new LoginBodyModel(username, password);
         String accessToken = "Bearer " + api.auth.loginWithAccessToken(loginData);
 
@@ -167,7 +159,7 @@ public class ReviewsTests extends TestBase {
 
         PutReviewRequestModel putReviewBody = new PutReviewRequestModel(createClubBodyModel.id(), updatedReview, assessment, readPages);
 
-        SuccessfulReviewResponseModel putReview = api.review.putReviewBody(newReview.id(), putReviewBody, accessToken);
+        api.review.putReviewBody(newReview.id(), putReviewBody, accessToken);
 
     }
 
@@ -241,7 +233,7 @@ public class ReviewsTests extends TestBase {
                 assessment, readPages);
         SuccessfulReviewResponseModel newReview = api.review.createReviewBody(createReview, accessToken);
 
-        GetReviewResponseModel getReview = api.review.getReviewBody(newReview.id(), accessToken);
+        api.review.getReviewBody(newReview.id(), accessToken);
 
         clubsPage.openPage(authJson)
                 .openClubPage(createClubBodyModel.id())
