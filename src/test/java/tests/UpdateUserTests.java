@@ -23,7 +23,7 @@ public class UpdateUserTests extends TestBase {
     @BeforeEach
     public void prepareTestData() {
         Faker faker = new Faker();
-        username = faker.name().firstName();
+        username = faker.name().firstName() + "_new2";
     }
 
     @Test

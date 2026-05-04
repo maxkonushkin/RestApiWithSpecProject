@@ -33,10 +33,10 @@ public class ClubsTests extends TestBase {
     @BeforeEach
     public void prepareTestData() {
         Faker faker = new Faker();
-        username = faker.name().firstName() + "_new2";
+        username = faker.name().firstName() + "_new3";
         telegram_link = faker.internet().url();
         updatedTelegram_link = faker.internet().url();
-        bookTitle = faker.book().title() + "_new2";
+        bookTitle = faker.book().title() + "_new3";
         updatedBookTitle = faker.book().title();
         bookAuthors = faker.book().author();
         updatedBookAuthors = faker.book().author();
