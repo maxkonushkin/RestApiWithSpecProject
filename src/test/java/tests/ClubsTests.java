@@ -36,7 +36,7 @@ public class ClubsTests extends TestBase {
         username = faker.name().firstName() + "_new2";
         telegram_link = faker.internet().url();
         updatedTelegram_link = faker.internet().url();
-        bookTitle = faker.book().title();
+        bookTitle = faker.book().title() + "_new2";
         updatedBookTitle = faker.book().title();
         bookAuthors = faker.book().author();
         updatedBookAuthors = faker.book().author();
