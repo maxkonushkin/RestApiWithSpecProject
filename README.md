@@ -59,6 +59,7 @@
 Выполнена интеграция сборки <code>Jenkins</code> с <code>Allure TestOps</code>.
 Результат выполнения автотестов отображается в <code>Allure TestOps</code>
 На Dashboard в <code>Allure TestOps</code> отображена статистика пройденных тестов.
+Реализована возможность запуста сборки из "Allure TestOps"
 
 <p align="center">
 <img title="Allure TestOps DashBoard" src="media/screens/TestOps.PNG">
