@@ -5,6 +5,8 @@
 - <a href="#tools">Технологии и инструменты</a>
 - <a href="#jenkins">Сборка в Jenkins</a>
 - <a href="#allure">Пример Allure-отчета</a>
+- <a href="#TestOps">Интеграция с Allure TestOps</a>
+- <a href="#Jira">Интеграция с Jira</a>
 - <a href="#telegram">Уведомление в Telegram при помощи бота</a>
 
 <a id="tools"></a>
@@ -51,6 +53,7 @@
 <img title="Test Results in Alure" src="media/screens/Result.PNG">
 </p>
 
+<a id="TestOps"></a>
 ## <img src="media/logo/AllureTestOps.svg" title="Allure TestOps" width="4%"/> Интеграция с [Allure TestOps](https://allure.autotests.cloud)
 
 Выполнена интеграция сборки <code>Jenkins</code> с <code>Allure TestOps</code>.
@@ -61,6 +64,7 @@
 <img title="Allure TestOps DashBoard" src="media/screens/TestOps.PNG">
 </p>
 
+<a id="Jira"></a>
 ## <img src="media/logo/Jira.svg" title="Jira" width="4%"/> Интеграция с [Jira](https://jira.autotests.cloud)
 
 Реализована интеграция <code>Allure TestOps</code> с <code>Jira</code>, в тикете отображается информация, какие тест-кейсы были написаны в рамках задачи и результат их прогона.
